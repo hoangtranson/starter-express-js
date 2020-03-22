@@ -17,11 +17,9 @@ exports.up = function(knex) {
     }).createTable('roles', function (table) {
         table.string('role_id').primary();
         table.string('name');
-        table.string('desc').nullable()
     }).createTable('user_status', function (table) {
         table.string('user_status_id').primary();
         table.string('name');
-        table.string('desc').nullable()
     })
 };
 
