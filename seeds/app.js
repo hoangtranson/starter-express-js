@@ -14,7 +14,7 @@ exports.seed = async function (knex) {
       password: "admin",
       avatar_url: "",
       bio: "I am ...",
-      role_id: "admin",
+      role: "admin",
       status: "active"
     });
 
