@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 
 exports.seed = async function (knex) {
   try {
@@ -11,7 +12,7 @@ exports.seed = async function (knex) {
       last_name: "Tran",
       username: "admin",
       email: "admin@yopmail.com",
-      password: "admin",
+      password: bcrypt.hashSync('admin', 8),
       avatar_url: "",
       bio: "I am ...",
       role: "admin",
