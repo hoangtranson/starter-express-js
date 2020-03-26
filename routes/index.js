@@ -1,4 +1,5 @@
 const express = require("express");
+const db = require('../db');
 
 const controllers = require('../controllers');
 const middlewares = require('../middlewares');
@@ -6,7 +7,7 @@ const middlewares = require('../middlewares');
 const routes = function() {
     const apiRoute = express.Router();
 
-    const userController = controllers.userController();
+    const userController = controllers.userController(db);
     apiRoute.route("/user/login").post(userController.login);
 
     apiRoute.use(middlewares.authMiddleWare);
