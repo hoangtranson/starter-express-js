@@ -1,16 +1,30 @@
+const jwt = require('jsonwebtoken');
+const AUTH_UTILS = require('../utils/auth.util');
+const DATABASE = require('../db');
+
 const authMiddleWare = async (req, res, next) => {
     try {
-        const authorization = await req.header('Authorization');
-
+        const authorization = req.header('Authorization');
         if (!authorization) {
-            res.status(401).send({
+            return res.status(401).send({
                 message: 'Not authorized to do this action'
             });
         }
 
-        // get token and verify token valid or not
-        // get user information and add info to req such as token, userid, username, isAdmin?
-        
+        const token = authorization.replace('Bearer ', '');
+        const data = jwt.verify(token, AUTH_UTILS.JWT_KEY);
+
+        const user = await DATABASE('tokens').where({ user_id: data.id });
+        if (!user) {
+            return res.status(401).send({
+                message: 'Not authorized to do this action'
+            });
+        }
+
+        req.userId = data.id;
+        req.username = data.username;
+        req.isAdmin = data.isAdmin;
+
         next();
     } catch (error) {
         return res.status(500).json({ message: `${JSON.stringify(error)}` });
