@@ -36,7 +36,7 @@ const userController = (DATABASE) => {
             } else {
                 await DATABASE('tokens').insert({ user_id: user[0].id, token });
             }
-            
+
             const data = {
                 first_name: user[0].first_name,
                 last_name: user[0].last_name,
@@ -55,6 +55,7 @@ const userController = (DATABASE) => {
 
     const logout = async (req, res, next) => {
         try {
+            await DATABASE('tokens').where('user_id', req.userId).del();
             return res.status(200).json({});
         } catch (error) {
             return res.status(500).json({ message: `${JSON.stringify(error)}` });
