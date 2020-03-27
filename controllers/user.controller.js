@@ -105,13 +105,40 @@ const userController = (DATABASE) => {
         }
     }
 
+    const createUser = async (req, res, next) => {
+        try {
+            if(req.isAdmin) {
+                const { first_name, last_name, email, password, role, avatar} = await req.body;
+                // upload avatar here and store url to database
+                const encryptedPwd = bcrypt.hashSync(password, 8);
+                const username = email.split('@')[0];
+                await DATABASE('users').insert({
+                    first_name, 
+                    last_name, 
+                    email, 
+                    username,
+                    role, 
+                    password: encryptedPwd, 
+                    status: 'active', 
+                    avatar_url: '',
+                });
+                return res.status(200).json();
+            } else {
+                return res.status(401).json({ message : 'No authorized to create user.'});
+            }
+        } catch (error) {
+            return res.status(500).json({ message: `${JSON.stringify(error)}` });
+        }
+    }
+
     return {
         login,
         logout,
         getAllUser,
         deleteUser,
         updateUser,
-        getUser
+        getUser,
+        createUser
     }
 }
 

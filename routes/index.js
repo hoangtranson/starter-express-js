@@ -11,9 +11,9 @@ const routes = function() {
     apiRoute.route("/user/login").post(userController.login);
 
     apiRoute.use(middlewares.authMiddleWare);
-    
     apiRoute.route("/user/logout").post(userController.logout);
     apiRoute.route("/users").get(userController.getAllUser);
+    apiRoute.route("/user").post(userController.createUser);
     apiRoute.route("/user/:id")
     .delete(userController.deleteUser)
     .put(userController.updateUser)
